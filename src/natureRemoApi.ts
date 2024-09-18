@@ -89,6 +89,12 @@ export class NatureRemoApi {
     this.postMessage(url, { 'button': power });
   }
 
+  
+  async sendSignal(signalId: string): Promise<void> {
+    const url = `/appliances/${signalId}/light`;
+    this.postMessage(url, { });
+  }
+
   async setAirconPowerOff(applianceId: string): Promise<void> {
     this.setAirconSettings(applianceId, { 'button': 'power-off'});
   }
