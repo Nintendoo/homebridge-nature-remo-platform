@@ -1,6 +1,4 @@
-**This project is no longer maintained. We recommend you to use other plugin.**
-
-# Homebridge Nature Remo Platform
+# Homebridge Nature Remo Platform (Fork)
 
 [![npm](https://badgen.net/npm/v/@takeya0x86/homebridge-nature-remo-platform?icon=npm&label)](https://www.npmjs.com/package/@takeya0x86/homebridge-nature-remo-platform)
 [![Build and Lint](https://github.com/takeya0x86/homebridge-nature-remo-platform/actions/workflows/build.yml/badge.svg)](https://github.com/takeya0x86/homebridge-nature-remo-platform/actions/workflows/build.yml)
