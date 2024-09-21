@@ -1,7 +1,7 @@
 {
   "displayName": "Homebridge Nature Remo Platform",
-  "name": "@nintendoo/homebridge-nature-remo-platform",
-  "version": "2.0.3",
+  "name": "@kryker/homebridge-nature-remo-platform",
+  "version": "1.0.0",
   "description": "Homebridge plugin for Nature Remo which supports lights, air conditioners and TVs.",
   "license": "Apache-2.0",
   "repository": {
@@ -20,7 +20,7 @@
     "lint": "eslint src/**.ts --max-warnings=0",
     "watch": "npm run build && npm link && nodemon",
     "build": "rimraf ./dist && tsc",
-    "prepublishOnly": "npm run lint && npm run build"
+    "prepublishOnly": "npm run lint --fix && npm run build"
   },
   "keywords": [
     "homebridge-plugin",

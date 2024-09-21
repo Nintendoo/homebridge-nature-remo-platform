@@ -84,19 +84,19 @@ export class NatureRemoApi {
     return device;
   }
 
-  async setLight(applianceId: string, power: 'on' | 'off'): Promise<void> {
+  async setLight(applianceId: string, power: 'on' | 'off' | 'night' | 'on-favorite'): Promise<void> {
     const url = `/appliances/${applianceId}/light`;
     this.postMessage(url, { 'button': power });
   }
 
-  
+
   async sendSignal(signalId: string): Promise<void> {
-    const url = `/appliances/${signalId}/light`;
-    this.postMessage(url, { });
+    const url = `/signals/${signalId}/send`;
+    this.postMessage(url, {});
   }
 
   async setAirconPowerOff(applianceId: string): Promise<void> {
-    this.setAirconSettings(applianceId, { 'button': 'power-off'});
+    this.setAirconSettings(applianceId, { 'button': 'power-off' });
   }
 
   async setAirconOperationMode(applianceId: string, operationMode: OperationMode): Promise<void> {

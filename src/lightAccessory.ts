@@ -28,11 +28,11 @@ export class NatureNemoLightAccessory {
       .onGet(this.getOn.bind(this))
       .onSet(this.setOn.bind(this));
     if (this.signalId) {
-      this.platform.logger.debug('[%s] id -> %s, Brightness enabled', this.name, this.id);
+      this.platform.logger.info('[%s] id -> %s, Brightness enabled', this.name, this.id);
 
       this.service.getCharacteristic(this.platform.Characteristic.Brightness)
-        .onGet(this.getOn.bind(this))
-        .onSet(this.setOn.bind(this));
+        .onGet(this.getBrightness.bind(this))
+        .onSet(this.setBrightness.bind(this));
     }
 
 
@@ -48,35 +48,46 @@ export class NatureNemoLightAccessory {
 
   async setOn(value: CharacteristicValue): Promise<void> {
     this.platform.logger.debug('setOn called ->', value);
-    if (typeof value !== 'boolean') {
+    if (value !== 'on' && value !== 'off' && value !== 'night' && value !== 'on-favorite') {
       throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.INVALID_VALUE_IN_REQUEST);
     }
-    const power = value ? 'on' : 'off';
+    const power = value;
     await this.platform.natureRemoApi.setLight(this.id, power);
     this.platform.logger.info('[%s] Power <- %s', this.name, power);
   }
 
   async getBrightness(): Promise<CharacteristicValue> {
-    this.platform.logger.debug('getBrightness called');
+    /*
+    this.platform.logger.info('getBrightness called');
     const lightState = await this.platform.natureRemoApi.getLightState(this.id);
     this.platform.logger.info('[%s] Brightness -> %s', this.name, lightState.brightness);
+    if(lightState.brightness === "favorite") {
+      return 20;
+    }
+    if( isNaN(Number(lightState.brightness))) {
+      return 0;
+    }
     return lightState.brightness;
+    */
+    return 50;
   }
 
   async setBrightness(value: CharacteristicValue): Promise<void> {
-    this.platform.logger.debug('setBrightness called ->', value);
+    this.platform.logger.info('setBrightness called ->', value);
     if (typeof value !== 'number') {
       throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.INVALID_VALUE_IN_REQUEST);
     }
-    if (value < 10) {
-      this.platform.logger.info('[%s] Brightness <- %s', this.name, "Off");
-      await this.setOn("off");
-    }
-    else if (value < 80) {
-      this.platform.logger.info('[%s] Brightness <- %s', this.name, "Low");
-      await this.setOn("on");
+    if (value < 1) {
+      this.platform.logger.debug('[%s] Brightness <- %s', this.name, 'Off');
+      await this.setOn('off');
+    } else if (value < 20) {
+      this.platform.logger.debug('[%s] Brightness <- %s', this.name, 'Low');
+      await this.setOn('night');
+    } else if (value < 50) {
+      this.platform.logger.debug('[%s] Brightness <- %s', this.name, 'Mid');
+      await this.setOn('on');
     } else {
-      this.platform.logger.info('[%s] Brightness <- %s', this.name, "Max");
+      this.platform.logger.debug('[%s] Brightness <- %s', this.name, 'Max');
       await this.platform.natureRemoApi.sendSignal(this.signalId!);
     }
   }
